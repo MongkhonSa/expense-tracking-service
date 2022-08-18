@@ -19,6 +19,7 @@ import { UserModule } from './user/user.module';
       entities: [User],
       namingStrategy: new SnakeNamingStrategy(),
       synchronize: false,
+      migrations: ['migration/*.ts'],
     }),
     UserModule,
   ],
