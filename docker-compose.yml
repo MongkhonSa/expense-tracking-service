@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  migration:
+    build:
+      context: .
+
+    restart: always
+    environment:
+      NODE_ENV: 'development'
+      DB_HOST: 'expense-tracking-service-db'
+      DB_PORT: '5432'
+      DB_NAME: 'expense-tracking-service'
+      DB_USER: 'user'
+      DB_PASSWORD: 'password'
+    networks:
+      - expense-tracking-service
+    depends_on:
+      - expense-tracking-service-db
+  expense-tracking-service:
+    build:
+      context: .
+    image: expense-tracking-service
+    command: sh  -c 'npm run start:dev'
+    volumes:
+      - './src:/usr/src/app/src'
+    networks:
+      - expense-tracking-service
+    depends_on:
+      - expense-tracking-service-db
+    ports:
+      - 5001:3000
+    environment:
+      DB_HOST: expense-tracking-service-db
+      DB_NAME: 'expense-tracking-service'
+      DB_USER: 'user'
+      DB_PASSWORD: 'password'
+
+  expense-tracking-service-db:
+    image: 'postgres:12'
+    volumes:
+      - 'postgres-expense-tracking-service-db:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'
+    networks:
+      - expense-tracking-service
+    environment:
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'expense-tracking-service'
+volumes:
+  postgres-expense-tracking-service-db:
+networks:
+  expense-tracking-service:
