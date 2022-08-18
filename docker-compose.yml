@@ -1,17 +1,15 @@
 version: '3'
-
 services:
   migration:
     build:
       context: .
-
     restart: always
     environment:
       NODE_ENV: 'development'
       DB_HOST: 'expense-tracking-service-db'
       DB_PORT: '5432'
       DB_NAME: 'expense-tracking-service'
-      DB_USER: 'user'
+      DB_USERNAME: 'user'
       DB_PASSWORD: 'password'
     networks:
       - expense-tracking-service
@@ -33,7 +31,7 @@ services:
     environment:
       DB_HOST: expense-tracking-service-db
       DB_NAME: 'expense-tracking-service'
-      DB_USER: 'user'
+      DB_USERNAME: 'user'
       DB_PASSWORD: 'password'
 
   expense-tracking-service-db:
