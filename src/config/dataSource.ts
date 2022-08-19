@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import postgresConfig from './postgresConfig';
 
-const source = new DataSource({
+const dataSource = new DataSource({
   type: 'postgres',
   host: postgresConfig.host,
   port: postgresConfig.port,
@@ -15,4 +15,4 @@ const source = new DataSource({
   synchronize: false,
 });
 
-export default source;
+export default dataSource;
