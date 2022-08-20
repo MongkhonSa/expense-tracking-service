@@ -2,21 +2,33 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { SALT_ROUND } from '../const';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
   let userRepository: Repository<User>;
+  let dataSource;
+  const mockDataSource = () => ({
+    transaction: jest.fn(),
+  });
   const USER_REPOSITORY_TOKEN = getRepositoryToken(User);
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
         {
+          provide: DataSource,
+          useFactory: mockDataSource,
+        },
+        {
           provide: getRepositoryToken(User),
           useValue: {
+            create: jest
+              .fn()
+              .mockResolvedValue({ username: 'test', password: 'password' }),
             save: jest.fn(),
             findOneBy: jest.fn().mockResolvedValue({
               id: 'mock-id',
@@ -31,6 +43,7 @@ describe('UserService', () => {
 
     service = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(USER_REPOSITORY_TOKEN);
+    dataSource = module.get<DataSource>(DataSource);
   });
 
   it('should be defined', () => {
@@ -42,6 +55,7 @@ describe('UserService', () => {
   describe('Create', () => {
     const mockCreateUserDTO = { username: 'test', password: 'password' };
     const mockHashedPassword = 'mockHashedPassword';
+
     beforeEach(() => {
       jest.spyOn(bcrypt, 'hashSync').mockReturnValueOnce(mockHashedPassword);
     });
@@ -49,9 +63,17 @@ describe('UserService', () => {
       await service.create(mockCreateUserDTO);
       expect(bcrypt.hashSync).toHaveBeenCalledWith('password', SALT_ROUND);
     });
-    it('should call userRepository.save correctly', async () => {
+    it('should call transaction save correctly', async () => {
+      const mockedManager = {
+        save: jest.fn(),
+      };
+      dataSource.transaction.mockImplementation((cb) => {
+        cb(mockedManager);
+      });
       await service.create(mockCreateUserDTO);
-      expect(userRepository.save).toHaveBeenCalledWith({
+      expect(dataSource.transaction).toHaveBeenCalled();
+      expect(mockedManager.save).toHaveBeenCalledTimes(2);
+      expect(userRepository.create).toHaveBeenCalledWith({
         ...mockCreateUserDTO,
         password: mockHashedPassword,
       });

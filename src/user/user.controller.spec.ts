@@ -1,20 +1,26 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import * as constant from '../const';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { DataSource } from 'typeorm';
 
 describe('UserController', () => {
   let userController: UserController;
   let userService: UserService;
   const USER_REPOSITORY_TOKEN = getRepositoryToken(User);
-
+  const mockDataSource = () => ({
+    transaction: jest.fn(),
+  });
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
         UserService,
+        {
+          provide: DataSource,
+          useFactory: mockDataSource,
+        },
         {
           provide: USER_REPOSITORY_TOKEN,
           useValue: {
