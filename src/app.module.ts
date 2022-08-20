@@ -8,6 +8,7 @@ import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { IncomeAndExpensesAccountModule } from './income-and-expenses-account/income-and-expenses-account.module';
 import { IncomeAndExpensesAccount } from './income-and-expenses-account/entities/income-and-expenses-account.entity';
+import { Transaction } from './income-and-expenses-account/entities/transaction.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -17,7 +18,7 @@ import { IncomeAndExpensesAccount } from './income-and-expenses-account/entities
       username: postgresConfig.username,
       password: postgresConfig.password,
       database: postgresConfig.databaseName,
-      entities: [User, IncomeAndExpensesAccount],
+      entities: [User, IncomeAndExpensesAccount, Transaction],
       namingStrategy: new SnakeNamingStrategy(),
       synchronize: false,
       migrations: ['migration/*.ts'],
