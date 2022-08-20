@@ -1,3 +1,4 @@
+import { TRANSACTION_ENUM } from '../../const';
 import {
   Column,
   Entity,
@@ -15,6 +16,9 @@ export class Transaction {
   @Column()
   categoryName: string;
 
+  @Column({ type: 'enum', enum: TRANSACTION_ENUM })
+  type: TRANSACTION_ENUM;
+
   @Column()
   amount: number;
 
@@ -24,5 +28,5 @@ export class Transaction {
     () => IncomeAndExpensesAccount,
     (incomeAndExpensesAccount) => incomeAndExpensesAccount.transaction,
   )
-  incomeAndExpensesAccount: IncomeAndExpensesAccount[];
+  incomeAndExpensesAccount: IncomeAndExpensesAccount;
 }
