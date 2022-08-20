@@ -8,27 +8,27 @@ export class IncomeAndExpensesAccountController {
     private readonly incomeAndExpensesAccountService: IncomeAndExpensesAccountService,
   ) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.incomeAndExpensesAccountService.findOneByUserId(id);
+  @Get(':userId')
+  findOne(@Param('userId') userId: string) {
+    return this.incomeAndExpensesAccountService.findOneByUserId(userId);
   }
-  @Post(':id/income')
+  @Post(':userId/income')
   createIncomeRecord(
-    @Param('id') id: string,
+    @Param('userId') userId: string,
     @Body() createTransactionRecordDto: CreateTransactionRecordDto,
   ) {
     return this.incomeAndExpensesAccountService.createIncomeRecord(
-      id,
+      userId,
       createTransactionRecordDto,
     );
   }
-  @Post(':id/expenses')
+  @Post(':userId/expenses')
   createExpensesRecord(
-    @Param('id') id: string,
+    @Param('userId') userId: string,
     @Body() createTransactionRecordDto: CreateTransactionRecordDto,
   ) {
     return this.incomeAndExpensesAccountService.createExpensesRecord(
-      id,
+      userId,
       createTransactionRecordDto,
     );
   }
