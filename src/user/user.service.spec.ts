@@ -24,7 +24,7 @@ describe('UserService', () => {
           useFactory: mockDataSource,
         },
         {
-          provide: getRepositoryToken(User),
+          provide: USER_REPOSITORY_TOKEN,
           useValue: {
             create: jest
               .fn()
@@ -48,10 +48,10 @@ describe('UserService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-  it('userRepository should be defined', () => {
     expect(userRepository).toBeDefined();
+    expect(dataSource).toBeDefined();
   });
+
   describe('Create', () => {
     const mockCreateUserDTO = { username: 'test', password: 'password' };
     const mockHashedPassword = 'mockHashedPassword';
