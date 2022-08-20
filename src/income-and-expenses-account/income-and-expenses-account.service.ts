@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TRANSACTION_ENUM } from '../const';
-
+import * as dayjs from 'dayjs';
 import { DataSource, Repository } from 'typeorm';
 import { CreateTransactionRecordDto } from './dto/create-transaction-record.dto';
 import { IncomeAndExpensesAccount } from './entities/income-and-expenses-account.entity';
@@ -65,5 +65,31 @@ export class IncomeAndExpensesAccountService {
       await transactionalEntityManager.save(incomeAndExpensesAccount);
     });
     return expensesTransaction;
+  }
+  findTransactionByType(
+    type: TRANSACTION_ENUM,
+    startDate: Date,
+    endDate: Date,
+  ) {
+    const startDateFormatted = dayjs(startDate).startOf('date');
+    const endDateFormatted = dayjs(endDate).endOf('date');
+
+    //Note: not allow to get transection > 31 days
+    if (Math.abs(startDateFormatted.diff(endDateFormatted, 'day')) > 31) {
+      throw new BadRequestException();
+    }
+    return this.transactionRepository
+      .createQueryBuilder('transaction')
+      .select('transaction.category_name', 'categoryName')
+      .addSelect('SUM(transaction.amount)', 'total')
+      .where('transaction.createdAt >= :startDate', {
+        startDate: startDateFormatted,
+      })
+      .andWhere('transaction.createdAt < :endDate', {
+        endDate: endDateFormatted,
+      })
+      .andWhere('transaction.type =:type', { type })
+      .groupBy('transaction.category_name')
+      .getRawMany();
   }
 }
