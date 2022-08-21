@@ -18,7 +18,7 @@ import { IncomeAndExpensesAccountService } from './income-and-expenses-account.s
 import { CurrentUser } from '../user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path/posix';
+import { extname } from 'path';
 @Controller('income-and-expenses-account')
 @UseGuards(JwtAuthGuard)
 export class IncomeAndExpensesAccountController {

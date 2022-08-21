@@ -69,16 +69,7 @@ describe('IncomeAndExpensesAccountController', () => {
           },
         },
       ],
-    })
-      // .overrideProvider(JwtAuthGuard)
-      // .useValue({
-      //   canActivate: (context: ExecutionContext) => {
-      //     let a = context.getC
-      //     ctx.getContext().req.user = { user_id: 'abc123' }; // Your user object
-      //     return true;
-      //   },
-      // })
-      .compile();
+    }).compile();
 
     incomeAndExpensesAccountController =
       module.get<IncomeAndExpensesAccountController>(
@@ -149,6 +140,19 @@ describe('IncomeAndExpensesAccountController', () => {
           mockResponse,
         ),
       ).toBe('mockReport');
+    });
+  });
+  describe('uploadFile', () => {
+    it('should upload file correcty', async () => {
+      const mockFile = {
+        originalname: 'sample.name',
+        mimetype: 'sample.type',
+        path: 'sample.url',
+        buffer: Buffer.from('whatever'),
+      } as Express.Multer.File;
+      expect(incomeAndExpensesAccountController.uploadFile(mockFile)).toBe(
+        mockFile,
+      );
     });
   });
 });
