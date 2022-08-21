@@ -5,9 +5,12 @@ import {
   HttpStatus,
   Param,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 import { TRANSACTION_ENUM } from '../const';
 import { CreateTransactionRecordDto } from './dto/create-transaction-record.dto';
@@ -15,33 +18,36 @@ import { GetReportDto } from './dto/get-report-dto';
 import { IncomeAndExpensesAccountService } from './income-and-expenses-account.service';
 
 @Controller('income-and-expenses-account')
+@UseGuards(JwtAuthGuard)
 export class IncomeAndExpensesAccountController {
   constructor(
     private readonly incomeAndExpensesAccountService: IncomeAndExpensesAccountService,
   ) {}
 
-  @Get(':userId')
-  findOne(@Param('userId') userId: string) {
-    return this.incomeAndExpensesAccountService.findOneByUserId(userId);
+  @Get('')
+  findOne(@Req() req) {
+    return this.incomeAndExpensesAccountService.findOneByUserId(
+      req.user.userId,
+    );
   }
 
-  @Post(':userId/income')
+  @Post('/income')
   createIncomeRecord(
-    @Param('userId') userId: string,
+    @Req() req,
     @Body() createTransactionRecordDto: CreateTransactionRecordDto,
   ) {
     return this.incomeAndExpensesAccountService.createIncomeRecord(
-      userId,
+      req.user.userId,
       createTransactionRecordDto,
     );
   }
-  @Post(':userId/expenses')
+  @Post('/expenses')
   createExpensesRecord(
-    @Param('userId') userId: string,
+    @Req() req,
     @Body() createTransactionRecordDto: CreateTransactionRecordDto,
   ) {
     return this.incomeAndExpensesAccountService.createExpensesRecord(
-      userId,
+      req.user.userId,
       createTransactionRecordDto,
     );
   }

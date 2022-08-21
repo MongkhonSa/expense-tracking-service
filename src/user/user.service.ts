@@ -29,7 +29,7 @@ export class UserService {
     return user;
   }
 
-  findOne(id: string) {
-    return this.usersRepository.findOneBy({ id });
+  findOneByUsername(username: string) {
+    return this.usersRepository.findOneBy({ username });
   }
 }

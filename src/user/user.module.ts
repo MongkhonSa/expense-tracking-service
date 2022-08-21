@@ -9,5 +9,6 @@ import { IncomeAndExpensesAccount } from '../income-and-expenses-account/entitie
   imports: [TypeOrmModule.forFeature([User, IncomeAndExpensesAccount])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

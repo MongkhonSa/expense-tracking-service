@@ -60,18 +60,4 @@ describe('UserController', () => {
       expect(await userService.create).toHaveBeenCalledWith(mockCreateUserDTO);
     });
   });
-  describe('findOne', () => {
-    it('should return an create user', async () => {
-      const mockId = 'mock-id';
-      const mockResult = {
-        id: 'mock-id',
-        username: 'test',
-        password: 'password',
-        isValidated: false,
-      };
-      jest.spyOn(userService, 'findOne').mockResolvedValue(mockResult);
-      expect(await userController.findOne(mockId)).toBe(mockResult);
-      expect(await userService.findOne).toHaveBeenCalledWith(mockId);
-    });
-  });
 });
