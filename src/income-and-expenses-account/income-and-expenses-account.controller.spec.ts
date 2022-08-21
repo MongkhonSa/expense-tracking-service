@@ -8,7 +8,6 @@ import { Transaction } from './entities/transaction.entity';
 import { IncomeAndExpensesAccountController } from './income-and-expenses-account.controller';
 import { IncomeAndExpensesAccountService } from './income-and-expenses-account.service';
 import { GetReportDto } from './dto/get-report-dto';
-import { Response } from 'express';
 
 describe('IncomeAndExpensesAccountController', () => {
   let incomeAndExpensesAccountController: IncomeAndExpensesAccountController;
@@ -70,7 +69,16 @@ describe('IncomeAndExpensesAccountController', () => {
           },
         },
       ],
-    }).compile();
+    })
+      // .overrideProvider(JwtAuthGuard)
+      // .useValue({
+      //   canActivate: (context: ExecutionContext) => {
+      //     let a = context.getC
+      //     ctx.getContext().req.user = { user_id: 'abc123' }; // Your user object
+      //     return true;
+      //   },
+      // })
+      .compile();
 
     incomeAndExpensesAccountController =
       module.get<IncomeAndExpensesAccountController>(

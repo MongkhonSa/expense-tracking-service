@@ -25,12 +25,6 @@ describe('UserController', () => {
           provide: USER_REPOSITORY_TOKEN,
           useValue: {
             save: jest.fn(),
-            findOneBy: jest.fn().mockResolvedValue({
-              id: 'mock-id',
-              username: 'test',
-              password: 'password',
-              isValidated: false,
-            }),
           },
         },
       ],

@@ -79,18 +79,21 @@ describe('UserService', () => {
       });
     });
   });
-  describe('findOneBy', () => {
+  describe('findOneByUsername', () => {
+    const mockUserName = 'mockUserName';
+
     const mockFindOne: User = {
       id: 'mock-id',
       username: 'test',
       password: 'password',
       isValidated: false,
     };
-    const mockId = 'mockId';
 
     it('should return value correctly', async () => {
-      const user = await service.findOne(mockId);
-      expect(userRepository.findOneBy).toHaveBeenCalledWith({ id: mockId });
+      const user = await service.findOneByUsername(mockUserName);
+      expect(userRepository.findOneBy).toHaveBeenCalledWith({
+        username: mockUserName,
+      });
       expect(user).toEqual(mockFindOne);
     });
   });
