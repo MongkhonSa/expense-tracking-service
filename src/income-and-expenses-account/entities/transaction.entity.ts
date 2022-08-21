@@ -22,6 +22,9 @@ export class Transaction {
   @Column()
   amount: number;
 
+  @Column({ nullable: true })
+  image: string;
+
   @CreateDateColumn()
   createdAt: Date;
   @ManyToOne(

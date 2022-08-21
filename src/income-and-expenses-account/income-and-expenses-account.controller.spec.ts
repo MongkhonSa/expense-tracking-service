@@ -26,6 +26,7 @@ describe('IncomeAndExpensesAccountController', () => {
     transaction: [],
   };
   const mockIncomeTransaction: Transaction = {
+    image: 'image-path',
     incomeAndExpensesAccount: mockIncomeAndExpensesAccount,
     categoryName: 'mock-category-name',
     id: 'mock-transaction-id',

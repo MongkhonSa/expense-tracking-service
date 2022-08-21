@@ -17,6 +17,7 @@ describe('IncomeAndExpensesAccountService', () => {
   const mockCreateTransactionRecordDto: CreateTransactionRecordDto = {
     categoryName: 'mock-category-name',
     amount: 100,
+    image: 'mock-image-path',
   };
   const mockCreateQueryBuilder: any = {
     select: () => mockCreateQueryBuilder,
