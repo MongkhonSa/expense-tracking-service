@@ -4,9 +4,10 @@ import {
   Get,
   HttpStatus,
   Post,
-  Req,
   Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -15,6 +16,9 @@ import { CreateTransactionRecordDto } from './dto/create-transaction-record.dto'
 import { GetReportDto } from './dto/get-report-dto';
 import { IncomeAndExpensesAccountService } from './income-and-expenses-account.service';
 import { CurrentUser } from '../user.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path/posix';
 @Controller('income-and-expenses-account')
 @UseGuards(JwtAuthGuard)
 export class IncomeAndExpensesAccountController {
@@ -59,5 +63,23 @@ export class IncomeAndExpensesAccountController {
         getReportDto.endDate,
       );
     return response.status(HttpStatus.OK).send(report);
+  }
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          const filename = `${uniqueSuffix}${ext}`;
+          callback(null, filename);
+        },
+      }),
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return file;
   }
 }
