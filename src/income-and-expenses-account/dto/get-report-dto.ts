@@ -1,5 +1,5 @@
 import { IsDateString, IsEnum } from 'class-validator';
-import { TRANSACTION_ENUM } from 'src/const';
+import { TRANSACTION_ENUM } from '../../const';
 
 export class GetReportDto {
   @IsDateString()

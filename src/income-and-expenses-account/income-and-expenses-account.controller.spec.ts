@@ -7,6 +7,8 @@ import { IncomeAndExpensesAccount } from './entities/income-and-expenses-account
 import { Transaction } from './entities/transaction.entity';
 import { IncomeAndExpensesAccountController } from './income-and-expenses-account.controller';
 import { IncomeAndExpensesAccountService } from './income-and-expenses-account.service';
+import { GetReportDto } from './dto/get-report-dto';
+import { Response } from 'express';
 
 describe('IncomeAndExpensesAccountController', () => {
   let incomeAndExpensesAccountController: IncomeAndExpensesAccountController;
@@ -117,6 +119,28 @@ describe('IncomeAndExpensesAccountController', () => {
           mockCreateTransactionRecordDto,
         ),
       ).toBe(mockExpensesTransaction);
+    });
+  });
+  describe('getReport', () => {
+    const mockResponse: any = {
+      send: () => 'mockReport',
+      status: () => mockResponse,
+    };
+    const mockGetRportInput: GetReportDto = {
+      type: TRANSACTION_ENUM.EXPENSES,
+      startDate: new Date('12/12/2022'),
+      endDate: new Date('12/12/2022'),
+    };
+    it('should return report correctly', async () => {
+      jest
+        .spyOn(incomeAndExpensesAccountService, 'findTransactionByType')
+        .mockResolvedValue([]);
+      expect(
+        await incomeAndExpensesAccountController.getReport(
+          mockGetRportInput,
+          mockResponse,
+        ),
+      ).toBe('mockReport');
     });
   });
 });

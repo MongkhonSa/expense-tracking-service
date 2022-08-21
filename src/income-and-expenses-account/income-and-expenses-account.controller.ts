@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { TRANSACTION_ENUM } from 'src/const';
+import { TRANSACTION_ENUM } from '../const';
 import { CreateTransactionRecordDto } from './dto/create-transaction-record.dto';
 import { GetReportDto } from './dto/get-report-dto';
 import { IncomeAndExpensesAccountService } from './income-and-expenses-account.service';
@@ -47,7 +47,6 @@ export class IncomeAndExpensesAccountController {
   }
   @Post('report')
   async getReport(
-    @Param('type') type: TRANSACTION_ENUM,
     @Body() getReportDto: GetReportDto,
     @Res() response: Response,
   ) {

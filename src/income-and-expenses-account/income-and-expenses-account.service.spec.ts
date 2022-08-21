@@ -18,6 +18,14 @@ describe('IncomeAndExpensesAccountService', () => {
     categoryName: 'mock-category-name',
     amount: 100,
   };
+  const mockCreateQueryBuilder: any = {
+    select: () => mockCreateQueryBuilder,
+    addSelect: () => mockCreateQueryBuilder,
+    groupBy: () => mockCreateQueryBuilder,
+    where: () => mockCreateQueryBuilder,
+    andWhere: () => mockCreateQueryBuilder,
+    getRawMany: () => 'mockReport',
+  };
   let incomeAndExpensesAccountService: IncomeAndExpensesAccountService;
   let transactionRepository: Repository<Transaction>;
   let incomeAndExpensesAccountRepository: Repository<IncomeAndExpensesAccount>;
@@ -48,6 +56,7 @@ describe('IncomeAndExpensesAccountService', () => {
           provide: TRANSACTION_REPOSITORY_TOKEN,
           useValue: {
             create: jest.fn(),
+            createQueryBuilder: () => mockCreateQueryBuilder,
           },
         },
       ],
@@ -134,6 +143,18 @@ describe('IncomeAndExpensesAccountService', () => {
         incomeAndExpensesAccount: mockIncomeAndExpensesAccount,
         type: TRANSACTION_ENUM.EXPENSES,
       });
+    });
+  });
+
+  describe('getReport', () => {
+    it('should query report correctly', async () => {
+      await expect(
+        incomeAndExpensesAccountService.findTransactionByType(
+          TRANSACTION_ENUM.EXPENSES,
+          new Date('12/12/2020'),
+          new Date('12/12/2020'),
+        ),
+      ).toEqual('mockReport');
     });
   });
 });

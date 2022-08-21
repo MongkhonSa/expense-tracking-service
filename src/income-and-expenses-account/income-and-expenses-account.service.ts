@@ -74,10 +74,6 @@ export class IncomeAndExpensesAccountService {
     const startDateFormatted = dayjs(startDate).startOf('date');
     const endDateFormatted = dayjs(endDate).endOf('date');
 
-    //Note: not allow to get transection > 31 days
-    if (Math.abs(startDateFormatted.diff(endDateFormatted, 'day')) > 31) {
-      throw new BadRequestException();
-    }
     return this.transactionRepository
       .createQueryBuilder('transaction')
       .select('transaction.category_name', 'categoryName')
@@ -90,6 +86,6 @@ export class IncomeAndExpensesAccountService {
       })
       .andWhere('transaction.type =:type', { type })
       .groupBy('transaction.category_name')
-      .getRawMany();
+      .getRawMany<{ categoryName: string }[]>();
   }
 }
