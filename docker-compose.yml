@@ -1,25 +1,10 @@
 version: '3'
 services:
-  migration:
-    build:
-      context: .
-    restart: always
-    environment:
-      NODE_ENV: 'development'
-      DB_HOST: 'expense-tracking-service-db'
-      DB_PORT: '5432'
-      DB_NAME: 'expense-tracking-service'
-      DB_USERNAME: 'user'
-      DB_PASSWORD: 'password'
-    networks:
-      - expense-tracking-service
-    depends_on:
-      - expense-tracking-service-db
   expense-tracking-service:
     build:
       context: .
     image: expense-tracking-service
-    command: sh  -c 'npm run start:dev'
+    command: sh  -c 'npm run typeorm migration:run && npm run start'
     volumes:
       - './src:/usr/src/app/src'
     networks:
