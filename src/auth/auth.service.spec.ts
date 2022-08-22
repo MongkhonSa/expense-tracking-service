@@ -4,7 +4,7 @@ import { DataSource } from 'typeorm';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { User } from '../user/entities/user.entity';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { SALT_ROUND } from '../const';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { LoginDto } from './dto/login.dto';

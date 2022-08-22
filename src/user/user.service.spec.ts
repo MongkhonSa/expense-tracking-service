@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { SALT_ROUND } from '../const';
 import { DataSource, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
