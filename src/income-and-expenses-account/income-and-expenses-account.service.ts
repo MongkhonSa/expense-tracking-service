@@ -71,8 +71,8 @@ export class IncomeAndExpensesAccountService {
     startDate: Date,
     endDate: Date,
   ) {
-    const startDateFormatted = dayjs(startDate).startOf('date');
-    const endDateFormatted = dayjs(endDate).endOf('date');
+    const startDateFormatted = dayjs(startDate);
+    const endDateFormatted = dayjs(endDate);
 
     return this.transactionRepository
       .createQueryBuilder('transaction')
