@@ -1,8 +1,11 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   HttpStatus,
+  MaxFileSizeValidator,
+  ParseFilePipe,
   Post,
   Res,
   UploadedFile,
@@ -79,7 +82,17 @@ export class IncomeAndExpensesAccountController {
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+          new FileTypeValidator({ fileType: /image*/ }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
     return file;
   }
 }
