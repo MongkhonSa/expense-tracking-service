@@ -12,7 +12,7 @@ services:
     depends_on:
       - expense-tracking-service-db
     ports:
-      - 5001:3000
+      - 5001:5001
     environment:
       DB_HOST: expense-tracking-service-db
       DB_NAME: 'expense-tracking-service'
