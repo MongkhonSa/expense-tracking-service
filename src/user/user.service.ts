@@ -26,6 +26,7 @@ export class UserService {
       await transactionalEntityManager.save(user);
       await transactionalEntityManager.save(incomeAndExpensesAccount);
     });
+    delete user.password;
     return user;
   }
 
