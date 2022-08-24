@@ -58,9 +58,11 @@ export class IncomeAndExpensesAccountController {
   async getReport(
     @Body() getReportDto: GetReportDto,
     @Res() response: Response,
+    @CurrentUser() user,
   ) {
     const report =
       await this.incomeAndExpensesAccountService.findTransactionByType(
+        user.userId,
         getReportDto.type,
         getReportDto.startDate,
         getReportDto.endDate,

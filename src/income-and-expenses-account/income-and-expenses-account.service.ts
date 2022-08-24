@@ -67,6 +67,7 @@ export class IncomeAndExpensesAccountService {
     return expensesTransaction;
   }
   findTransactionByType(
+    userId: string,
     type: TRANSACTION_ENUM,
     startDate: Date,
     endDate: Date,
@@ -76,9 +77,16 @@ export class IncomeAndExpensesAccountService {
 
     return this.transactionRepository
       .createQueryBuilder('transaction')
+      .innerJoin(
+        'transaction.incomeAndExpensesAccount',
+        'incomeAndExpensesAccount',
+      )
       .select('transaction.category_name', 'categoryName')
       .addSelect('SUM(transaction.amount)', 'total')
-      .where('transaction.createdAt >= :startDate', {
+      .where('incomeAndExpensesAccount.user = :userId', {
+        userId,
+      })
+      .andWhere('transaction.createdAt >= :startDate', {
         startDate: startDateFormatted,
       })
       .andWhere('transaction.createdAt < :endDate', {

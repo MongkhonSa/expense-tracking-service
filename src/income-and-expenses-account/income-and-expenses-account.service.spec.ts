@@ -25,6 +25,7 @@ describe('IncomeAndExpensesAccountService', () => {
     groupBy: () => mockCreateQueryBuilder,
     where: () => mockCreateQueryBuilder,
     andWhere: () => mockCreateQueryBuilder,
+    innerJoin: () => mockCreateQueryBuilder,
     getRawMany: () => 'mockReport',
   };
   let incomeAndExpensesAccountService: IncomeAndExpensesAccountService;
@@ -151,6 +152,7 @@ describe('IncomeAndExpensesAccountService', () => {
     it('should query report correctly', async () => {
       await expect(
         incomeAndExpensesAccountService.findTransactionByType(
+          mockUserId,
           TRANSACTION_ENUM.EXPENSES,
           new Date('12/12/2020'),
           new Date('12/12/2020'),

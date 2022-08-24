@@ -139,6 +139,7 @@ describe('IncomeAndExpensesAccountController', () => {
         await incomeAndExpensesAccountController.getReport(
           mockGetRportInput,
           mockResponse,
+          mockUserId,
         ),
       ).toBe('mockReport');
     });
